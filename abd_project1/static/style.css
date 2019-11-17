@@ -1,0 +1,101 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+h1 {
+  text-align: center;
+  size: 40px;
+}
+
+
+.horizontal_menu_container {
+	width: 85%;
+	float: right;
+	text-align:center;
+}
+
+.vertical_menu_container {
+	color: black;
+	height: auto;
+	float: left;
+	margin: 60px 10px 0px 10px;
+}
+
+
+ul {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+li a {
+	display: block;
+	text-align: center;
+	font-size: 1.2em;
+	width: 130px;
+	text-decoration: none;
+	color: black;
+	background-color: #d6d6d6;
+	padding: 10px 15px;
+	margin: 0px 1px 1px 0px;
+	border: 1px solid;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 2px 3px gray;
+	-moz-box-shadow: 0px 2px 3px gray;
+	-webkit-box-shadow: 0px 2px 3px gray;
+}
+
+li a:hover {
+	color: white;
+	background: #929292;
+}
+
+.menu_selected {
+	color: white;
+	background: #606060;
+}
+
+.horizontal_menu {
+	float: left;
+}
+
+.main_container {
+	background-color: gray;
+	color: black;
+	width: 80%;
+	height: auto;
+	float: right;
+	padding: 25px;
+	margin: 10px;
+}
+
+label {
+	height:20px;
+	margin: 10px;
+}
+
+input {
+	width:240px;
+	height:20px;
+	margin: 10px auto 10px auto;
+}
+
+.login_button {
+	width:80px;
+	height:30px;
+	float:right;
+	margin: auto;
+}
+
+.login_container {
+	background: #929292;
+	color: black;
+	width:320px;
+	height:150px;
+	margin: auto;
+	margin-top: 10%;
+	padding: 25px;
+}
