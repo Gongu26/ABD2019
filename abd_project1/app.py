@@ -1,11 +1,24 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
+
+import sqlalchemy as db
+
+from engine import Engine
 
 app = Flask(__name__)
 
 
-@app.route("/")
-def home():
-    return render_template("profil.html")
+@app.route("/", methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        #metadata = db.MetaData()
+        #kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
+        #password = db.select([kronikarz]).where(kronikarz.columns.email == request.form['email'])
+        if request.form['password'] != "admin":
+            error = 'Spróbuj ponownie'
+        else:
+            return redirect(url_for('profil'))
+    return render_template('logowanie.html', error=error)
 
 
 @app.route("/profil")
@@ -49,4 +62,6 @@ def zadania_przydzielone():
 
 
 if __name__ == "__main__":
+    #engine = Engine()
+    #engine.startEngine()
     app.run(debug=True)

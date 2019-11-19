@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
 	</head>
 	<body>
 		<h1>Kronika studencka</h1>
 		<div class="login_container">
-			<form action="logowanie.php">
+			<form action="" method="post">
 				<label>Login:</label>
-				<input type="text" name="login">
+				<input type="text" name="email" value="{{ request.form.email }}">
 				<br>
 				<label>Hasło:</label>
-				<input type="password" name="password">
+				<input type="password" name="password" value="{{ request.form.password }}">
 				<br><br>
 				<input class="login_button" type="submit" value="Zaloguj">
-			</form> 
+			</form>
+            {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+            {% endif %}
 		</div>
 	</body>
 </html>
