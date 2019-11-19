@@ -1,8 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 
 import sqlalchemy as db
-
-from engine import Engine
+from sqlalchemy import create_engine
 
 app = Flask(__name__)
 
@@ -11,10 +10,20 @@ app = Flask(__name__)
 def login():
     error = None
     if request.method == 'POST':
-        #metadata = db.MetaData()
-        #kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
-        #password = db.select([kronikarz]).where(kronikarz.columns.email == request.form['email'])
-        if request.form['password'] != "admin":
+
+        engine = create_engine(
+            "postgres://yxklmagf:BMExbNgDuJewn8Gy109TrzgGDtPLNrh3@balarama.db.elephantsql.com:5432/yxklmagf")
+
+        def startEngine(self):
+            self.engine.connect()
+
+        metadata = db.MetaData()
+        kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
+
+        s = db.select([kronikarz]).where(kronikarz.columns.email == request.form['email'])
+        result = engine.execute(s)
+        password = result.fetchone().haslo
+        if request.form['password'] != password:
             error = 'Spróbuj ponownie'
         else:
             return redirect(url_for('profil'))
@@ -62,6 +71,4 @@ def zadania_przydzielone():
 
 
 if __name__ == "__main__":
-    #engine = Engine()
-    #engine.startEngine()
     app.run(debug=True)
