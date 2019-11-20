@@ -1,9 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 
 import sqlalchemy as db
 from sqlalchemy import create_engine
 
 app = Flask(__name__)
+app.secret_key = 'super secret key'
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -22,10 +23,11 @@ def login():
 
         s = db.select([kronikarz]).where(kronikarz.columns.email == request.form['email'])
         result = engine.execute(s)
-        password = result.fetchone().haslo
-        if request.form['password'] != password:
+        kronikarz = result.fetchone()
+        if request.form['password'] != kronikarz.haslo:
             error = 'Spróbuj ponownie'
         else:
+            session['id'] = kronikarz.nr_indeksu
             return redirect(url_for('profil'))
     return render_template('logowanie.html', error=error)
 
