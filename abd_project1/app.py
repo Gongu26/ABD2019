@@ -15,20 +15,19 @@ def login():
         engine = create_engine(
             "postgres://yxklmagf:BMExbNgDuJewn8Gy109TrzgGDtPLNrh3@balarama.db.elephantsql.com:5432/yxklmagf")
 
-        def startEngine(self):
-            self.engine.connect()
-
+        engine.connect()
         metadata = db.MetaData()
         kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
-
         s = db.select([kronikarz]).where(kronikarz.columns.email == request.form['email'])
+
         result = engine.execute(s)
         kronikarz = result.fetchone()
-        if request.form['password'] != kronikarz.haslo:
-            error = 'Spróbuj ponownie'
-        else:
-            session['id'] = kronikarz.nr_indeksu
-            return redirect(url_for('profil'))
+        if kronikarz is not None:
+            if request.form['password'] != kronikarz.haslo:
+                error = 'Spróbuj ponownie'
+            else:
+                session['id'] = kronikarz.nr_indeksu
+                return redirect(url_for('profil'))
     return render_template('logowanie.html', error=error)
 
 
@@ -39,37 +38,44 @@ def profil():
 
 @app.route("/zmien-dane")
 def zmien_dane():
-    return render_template("zmien_dane.html")
+    if session['id'] is not None:
+        return render_template("zmien_dane.html")
 
 
 @app.route("/wnioski")
 def wnioski():
-    return render_template("wnioski.html")
+    if session['id'] is not None:
+        return render_template("wnioski.html")
 
 
 @app.route("/zloz-wniosek")
 def zloz_wniosek():
-    return render_template("zloz_wniosek.html")
+    if session['id'] is not None:
+        return render_template("zloz_wniosek.html")
 
 
 @app.route("/wydarzenia")
 def wydarzenia():
-    return render_template("wydarzenia.html")
+    if session['id'] is not None:
+        return render_template("wydarzenia.html")
 
 
 @app.route("/utworz-wydarzenie")
 def utworz_wydarzenie():
-    return render_template("utworz_wydarzenie.html")
+    if session['id'] is not None:
+        return render_template("utworz_wydarzenie.html")
 
 
 @app.route("/zadania-do-rozdzielenia")
 def zadania_do_rozdzielenia():
-    return render_template("zadania_do_rozdzielenia.html")
+    if session['id'] is not None:
+        return render_template("zadania_do_rozdzielenia.html")
 
 
 @app.route("/zadania-przydzielone")
 def zadania_przydzielone():
-    return render_template("zadania_przydzielone.html")
+    if session['id'] is not None:
+        return render_template("zadania_przydzielone.html")
 
 
 if __name__ == "__main__":
