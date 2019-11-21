@@ -1,13 +1,14 @@
 from flask import Flask, render_template, redirect, url_for, request, session
 
 import sqlalchemy as db
-from sqlalchemy import create_engine
+
+import models
+from dbConnection import DbConnection
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 
-engine = create_engine(
-    "postgres://yxklmagf:BMExbNgDuJewn8Gy109TrzgGDtPLNrh3@balarama.db.elephantsql.com:5432/yxklmagf")
+dbConnection = DbConnection()
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -15,10 +16,9 @@ def login():
     error = None
     if request.method == 'POST':
         metadata = db.MetaData()
-        kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
-        s = db.select([kronikarz]).where(kronikarz.columns.email == request.form['email'])
+        s = db.select([models.kronikarz]).where(models.kronikarz.columns.email == request.form['email'])
 
-        result = engine.execute(s)
+        result = dbConnection.engine.execute(s)
         kronikarz = result.fetchone()
         if kronikarz is not None:
             if request.form['password'] != kronikarz.haslo:
@@ -32,11 +32,9 @@ def login():
 @app.route("/profil")
 def profil():
     if session['id'] is not None:
-        metadata = db.MetaData()
-        kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
-        s = db.select([kronikarz]).where(kronikarz.columns.nr_indeksu == session['id'])
+        s = db.select([models.kronikarz]).where(models.kronikarz.columns.nr_indeksu == session['id'])
 
-        result = engine.execute(s)
+        result = dbConnection.engine.execute(s)
         kronikarz = result.fetchone()
         return render_template("profil.html", kronikarz=kronikarz)
 
@@ -84,5 +82,5 @@ def zadania_przydzielone():
 
 
 if __name__ == "__main__":
-    engine.connect()
+    dbConnection.engine.connect()
     app.run(debug=True)
