@@ -6,16 +6,14 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 
+engine = create_engine(
+    "postgres://yxklmagf:BMExbNgDuJewn8Gy109TrzgGDtPLNrh3@balarama.db.elephantsql.com:5432/yxklmagf")
+
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-
-        engine = create_engine(
-            "postgres://yxklmagf:BMExbNgDuJewn8Gy109TrzgGDtPLNrh3@balarama.db.elephantsql.com:5432/yxklmagf")
-
-        engine.connect()
         metadata = db.MetaData()
         kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
         s = db.select([kronikarz]).where(kronikarz.columns.email == request.form['email'])
@@ -33,7 +31,14 @@ def login():
 
 @app.route("/profil")
 def profil():
-    return render_template("profil.html")
+    if session['id'] is not None:
+        metadata = db.MetaData()
+        kronikarz = db.Table('kronikarz', metadata, autoload=True, autoload_with=engine)
+        s = db.select([kronikarz]).where(kronikarz.columns.nr_indeksu == session['id'])
+
+        result = engine.execute(s)
+        kronikarz = result.fetchone()
+        return render_template("profil.html", kronikarz=kronikarz)
 
 
 @app.route("/zmien-dane")
@@ -79,4 +84,5 @@ def zadania_przydzielone():
 
 
 if __name__ == "__main__":
+    engine.connect()
     app.run(debug=True)
