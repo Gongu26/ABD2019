@@ -29,6 +29,9 @@ class Kronikarz(dbConnection.Model):
         self.rodzaj = rodzaj
 
     def __eq__(self, other):
+        if self.nr_indeksu is None:
+            if other is None:
+                return True
         return type(self) is type(other) and self.nr_indeksu == other.nr_indeksu
 
     def __ne__(self, other):
@@ -39,7 +42,7 @@ class Wniosek(dbConnection.Model):
     __tablename__ = 'wniosek'
     id = db.Column(db.Integer, primary_key=True)
     data_zlozenia = db.Column(db.Date)
-    rodzaj = db.Column(db.Enum)
+    rodzaj = db.Column(db.String)
     czy_przyjeto = db.Column(db.Boolean)
     tresc = db.Column(db.String)
     data_rozpatrzenia = db.Column(db.Date)
@@ -54,12 +57,6 @@ class Wniosek(dbConnection.Model):
         self.data_rozpatrzenia = data_rozpatrzenia
         self.nr_indeksu_kronikarza = nr_indeksu_kronikarza
 
-    def __eq__(self, other):
-        return type(self) is type(other) and self.id == other.id
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
 
 class Wydarzenie_Kronikarz(dbConnection.Model):
     __tablename__ = 'wydarzenie_kronikarz'
@@ -71,12 +68,6 @@ class Wydarzenie_Kronikarz(dbConnection.Model):
         self.id = id
         self.id_wydarzenia = id_wydarzenia
         self.nr_indeksu_kronikarza = nr_indeksu_kronikarza
-
-    def __eq__(self, other):
-        return type(self) is type(other) and self.id == other.id
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
 
 
 class Wydarzenie(dbConnection.Model):
@@ -96,12 +87,6 @@ class Wydarzenie(dbConnection.Model):
         self.godzina_rozpoczenia = godzina_rozpoczenia
         self.godzina_zakonczenia = godzina_zakonczenia
 
-    def __eq__(self, other):
-        return type(self) is type(other) and self.id == other.id
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
 
 class Kronikarz_Zadanie(dbConnection.Model):
     __tablename__ = 'kronikarz_zadanie'
@@ -113,12 +98,6 @@ class Kronikarz_Zadanie(dbConnection.Model):
         self.id = id
         self.id_zadania = id_zadania
         self.nr_indeksu_kronikarza = nr_indeksu_kronikarza
-
-    def __eq__(self, other):
-        return type(self) is type(other) and self.id == other.id
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
 
 
 class Zadanie(dbConnection.Model):
@@ -140,9 +119,3 @@ class Zadanie(dbConnection.Model):
         self.faktyczna_data_realizacji = faktyczna_data_realizacji
         self.czy_zaakceptowane = czy_zaakceptowane
         self.opis = opis
-
-    def __eq__(self, other):
-        return type(self) is type(other) and self.id == other.id
-    
-    def __ne__(self, other):
-        return not self.__eq__(other)

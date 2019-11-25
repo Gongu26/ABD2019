@@ -31,6 +31,28 @@
 				</nav>
 			</section>
 		</div>
-		<div class="main_container">Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles, a paragraph can be just one sentence long. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” because it controls what happens in the rest of the paragraph.</div>
+		<div class="main_container">
+            <form action="" method="post">
+				<label>Email:</label>
+				<input type="text" name="email" value="{{ request.form.email }}">
+				<br>
+				<label>Imię:</label>
+				<input type="text" name="imie" value="{{ request.form.imie }}">
+                <br>
+                <label>Nazwisko:</label>
+				<input type="text" name="nazwisko" value="{{ request.form.nazwisko }}">
+				<br>
+                <label>Uczelnia:</label>
+				<input type="text" name="email" value="{{ request.form.email }}">
+				<br>
+                <label>Wydział:</label>
+				<input type="text" name="email" value="{{ request.form.email }}">
+                <br>
+                <label>Kierunek:</label>
+				<input type="text" name="email" value="{{ request.form.email }}">
+				<br><br>
+				<input class="zmine_dane_button" type="submit" value="Zmień Dane">
+			</form>
+        </div>
 	</body>
 </html>
