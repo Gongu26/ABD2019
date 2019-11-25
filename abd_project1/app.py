@@ -30,7 +30,8 @@ def profil():
     if session['id'] is not None:
         kronikarz = dbAccess.get_user_data()
         return render_template("profil.html", kronikarz=kronikarz)
-    return render_template('logowanie.html')
+    return redirect(url_for(''))
+
 
 
 @app.route("/zmien-dane", methods=['GET', 'POST'])
@@ -49,29 +50,32 @@ def wnioski():
         else:
             wniosek_kronikarz_list = dbAccess.get_wnioski_by_user(session['id'])
         return render_template("wnioski.html", redaktor_naczelny=redaktor_naczelny, len=len(wniosek_kronikarz_list), wniosek_kronikarz=wniosek_kronikarz_list)
-    return render_template('logowanie.html')
+    return redirect(url_for(''))
 
 
-@app.route("/zloz-wniosek")
+@app.route("/zloz-wniosek", methods=['GET', 'POST'])
 def zloz_wniosek():
     if session['id'] is not None:
-        return render_template("zloz_wniosek.html")
-    return render_template('logowanie.html')
+        if request.method == 'GET':
+            return render_template("zloz_wniosek.html")
+        dbAccess.add_wniosek(request.form['rodzaj'], request.form['tresc'], session['id'])
+        return redirect(url_for('wnioski'))
+    return redirect(url_for(''))
 
 
 @app.route("/wydarzenia")
 def wydarzenia():
     if session['id'] is not None:
-        wydarzenia = dbAccess.get_wydarzenia_by_user()
-        return render_template("wydarzenia.html", len=len(wydarzenia), wydarzenia=wydarzenia)
-    return render_template('logowanie.html')
+        wydarzenia_list = dbAccess.get_wydarzenia_by_user()
+        return render_template("wydarzenia.html", len=len(wydarzenia_list), wydarzenia=wydarzenia_list)
+    return redirect(url_for(''))
 
 
 @app.route("/utworz-wydarzenie", methods=['GET', 'POST'])
 def utworz_wydarzenie():
     if session['id'] is not None:
         return render_template("utworz_wydarzenie.html")
-    return render_template('logowanie.html')
+    return redirect(url_for('logowanie'))
 
 
 @app.route("/zadania-do-rozdzielenia")
@@ -81,7 +85,7 @@ def zadania_do_rozdzielenia():
             task_list = dbAccess.get_zadania_to_assign()
 
             return render_template("zadania_do_rozdzielenia.html", len=len(task_list), zadania=task_list)
-    return render_template('logowanie.html')
+    return redirect(url_for(''))
 
 
 @app.route("/zadania-przydzielone")
@@ -93,7 +97,7 @@ def zadania_przydzielone():
                                aktualne_zadania_count=aktualne_zadania_count,
                                len=len(task_list),
                                zadania=task_list)
-    return render_template('logowanie.html')
+    return redirect(url_for(''))
 
 
 if __name__ == "__main__":

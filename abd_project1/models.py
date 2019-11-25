@@ -1,4 +1,5 @@
 import sqlalchemy as db
+from sqlalchemy import Sequence
 
 from db_connection import DbConnection
 
@@ -40,7 +41,7 @@ class Kronikarz(dbConnection.Model):
 
 class Wniosek(dbConnection.Model):
     __tablename__ = 'wniosek'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, Sequence('wniosek_id_seq', start=4, increment=1), primary_key=True)
     data_zlozenia = db.Column(db.Date)
     rodzaj = db.Column(db.String)
     czy_przyjeto = db.Column(db.Boolean)
@@ -48,8 +49,7 @@ class Wniosek(dbConnection.Model):
     data_rozpatrzenia = db.Column(db.Date)
     nr_indeksu_kronikarza = db.Column(db.Integer, db.ForeignKey('kronikarz.nr_indeksu'))
 
-    def __init__(self, id, data_zlozenia, rodzaj, czy_przyjeto, tresc, data_rozpatrzenia, nr_indeksu_kronikarza):
-        self.id = id
+    def __init__(self, data_zlozenia, rodzaj, czy_przyjeto, tresc, data_rozpatrzenia, nr_indeksu_kronikarza):
         self.data_zlozenia = data_zlozenia
         self.rodzaj = rodzaj
         self.czy_przyjeto = czy_przyjeto
@@ -64,8 +64,7 @@ class Wydarzenie_Kronikarz(dbConnection.Model):
     nr_indeksu_kronikarza = db.Column(db.Integer, db.ForeignKey('kronikarz.nr_indeksu'))
     id_wydarzenia = db.Column(db.Integer, db.ForeignKey('wydarzenie.id'))
 
-    def __init__(self, id, id_wydarzenia, nr_indeksu_kronikarza):
-        self.id = id
+    def __init__(self, id_wydarzenia, nr_indeksu_kronikarza):
         self.id_wydarzenia = id_wydarzenia
         self.nr_indeksu_kronikarza = nr_indeksu_kronikarza
 
@@ -79,8 +78,7 @@ class Wydarzenie(dbConnection.Model):
     godzina_rozpoczenia = db.Column(db.TIMESTAMP)
     godzina_zakonczenia = db.Column(db.TIMESTAMP)
 
-    def __init__(self, id, data, rodzaj, opis, godzina_rozpoczenia, godzina_zakonczenia):
-        self.id = id
+    def __init__(self, data, rodzaj, opis, godzina_rozpoczenia, godzina_zakonczenia):
         self.data = data
         self.rodzaj = rodzaj
         self.opis = opis
@@ -94,8 +92,7 @@ class Kronikarz_Zadanie(dbConnection.Model):
     nr_indeksu_kronikarza = db.Column(db.Integer, db.ForeignKey('kronikarz.nr_indeksu'))
     id_zadania = db.Column(db.Integer, db.ForeignKey('zadanie.id'))
 
-    def __init__(self, id, id_zadania, nr_indeksu_kronikarza):
-        self.id = id
+    def __init__(self, id_zadania, nr_indeksu_kronikarza):
         self.id_zadania = id_zadania
         self.nr_indeksu_kronikarza = nr_indeksu_kronikarza
 
