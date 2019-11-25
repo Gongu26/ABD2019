@@ -88,7 +88,11 @@ def zadania_do_rozdzielenia():
 def zadania_przydzielone():
     if session['id'] is not None:
         task_list = dbAccess.get_zadania_by_user(session['id'])
-        return render_template("zadania_przydzielone.html", len=len(task_list), zadania=task_list)
+        aktualne_zadania_count = dbAccess.get_aktualne_zadania_amount_by_user(session['id'])
+        return render_template("zadania_przydzielone.html",
+                               aktualne_zadania_count=aktualne_zadania_count,
+                               len=len(task_list),
+                               zadania=task_list)
     return render_template('logowanie.html')
 
 

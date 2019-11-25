@@ -31,6 +31,7 @@
 			</section>
 		</div>
 		<div class="main_container">
+        <p>Liczba aktualnych zadań: {{ aktualne_zadania_count }}</p>
             <ol>
             {%for i in range(0, len)%}
                 <li class="list">{{zadania[i].rodzaj_zadania}}</li>
