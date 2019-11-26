@@ -31,16 +31,15 @@
 			</section>
 		</div>
 		<div class="main_container">
-        <p>Liczba aktualnych zadań: {{ aktualne_zadania_count }}</p>
-            <ol>
+
             {%for i in range(0, len)%}
-                <li class="list">
+                <p class="list">
                     <a class="list" href="{{url_for('zadania_przydzielone_szczegoly', id_zadania=zadania[i].id)}}">
                         {{zadania[i].rodzaj_zadania}}
                     </a>
-                </li>
+                </p>
             {%endfor%}
-            </ol>
+
         </div>
 	</body>
 </html>

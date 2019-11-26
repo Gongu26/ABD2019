@@ -29,7 +29,7 @@ ul {
 	list-style: none;
 }
 
-li {
+ol li {
 	display: block;
 	text-align: center;
 	font-size: 1.2em;
@@ -47,7 +47,7 @@ li {
 	-webkit-box-shadow: 0px 2px 3px gray;
 }
 
-li:hover {
+ol li:hover {
 	color: white;
 	background: #929292;
 }
@@ -100,4 +100,8 @@ input {
 
 .error {
 	color:red;
+}
+
+.list {
+	display: none;
 }

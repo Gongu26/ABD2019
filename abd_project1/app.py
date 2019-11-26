@@ -101,7 +101,12 @@ def zadania_do_rozdzielenia():
     if session['id'] is not None:
         if dbAccess.is_user_redaktor_naczelny(session['id']):
             task_list = dbAccess.get_zadania_to_assign()
-            return render_template("zadania_do_rozdzielenia.html", len=len(task_list), zadania=task_list)
+            kronikarz_zad_amount = dbAccess.get_aktualne_zadania_amount_by_user()
+            return render_template("zadania_do_rozdzielenia.html",
+                                   kronikarze_count=len(kronikarz_zad_amount),
+                                   kronikarz_zad_amount=kronikarz_zad_amount,
+                                   len=len(task_list),
+                                   zadania=task_list)
     return redirect(url_for('logowanie'))
 
 
@@ -116,9 +121,7 @@ def zadania_do_rozdzielenia_szczegoly():
 def zadania_przydzielone():
     if session['id'] is not None:
         task_list = dbAccess.get_zadania_by_user(session['id'])
-        aktualne_zadania_count = dbAccess.get_aktualne_zadania_amount_by_user(session['id'])
         return render_template("zadania_przydzielone.html",
-                               aktualne_zadania_count=aktualne_zadania_count,
                                len=len(task_list),
                                zadania=task_list)
     return redirect(url_for('logowanie'))

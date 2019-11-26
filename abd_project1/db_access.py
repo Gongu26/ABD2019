@@ -50,17 +50,15 @@ class DbAccess:
 
         return result.all()
 
-    def get_aktualne_zadania_amount_by_user(self, user_nr_indeksu):
+    def get_aktualne_zadania_amount_by_user(self):
         result = dbConnection.db_session \
-            .query(func.count(Zadanie.id)) \
+            .query(Kronikarz, func.count(Zadanie.id)) \
             .join(Kronikarz_Zadanie, Zadanie.id == Kronikarz_Zadanie.id_zadania) \
             .join(Kronikarz, Kronikarz.nr_indeksu == Kronikarz_Zadanie.nr_indeksu_kronikarza) \
-            .filter(Kronikarz.nr_indeksu == user_nr_indeksu and Zadanie.wyznaczona_data_realizacji > date.today())\
-            .group_by(Kronikarz.nr_indeksu).all()
-        if result:
-            return result[0][0]
-        else:
-            return 0
+            .filter(Zadanie.wyznaczona_data_realizacji > date.today())\
+            .group_by(Kronikarz.nr_indeksu)
+
+        return result.all()
 
     def get_zadania_by_user(self, user_nr_indeksu):
         result = dbConnection.db_session \
