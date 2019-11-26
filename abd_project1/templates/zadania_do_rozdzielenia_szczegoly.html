@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+	</head>
+	<body>
+		<h1>Kronika studencka</h1>
+		<div class="horizontal_menu_container">
+			<section>
+				<nav>
+					<ul class="horizontal_menu">
+					<li class="horizontal_menu"><a href="/profil">Moje dane</a></li>
+					<li class="horizontal_menu"><a>Baza zdjęć</a></li>
+					<li class="horizontal_menu"><a>Artykuły</a></li>
+					<li class="horizontal_menu"><a class="menu_selected" href="/zadania-przydzielone">Zadania</a></li>
+					<li class="horizontal_menu"><a>Terminarz</a></li>
+					<li class="horizontal_menu"><a href="/wydarzenia">Wydarzenia</a></li>
+					<li class="horizontal_menu"><a href="/wnioski">Wnioski</a></li>
+					</ul>
+				</nav>
+			</section>
+		</div>
+		<div class="vertical_menu_container">
+			<section>
+				<nav>
+					<ul>
+					<li><a href="/zadania-przydzielone">Zadania przydzielone</a></li>
+					<li><a class="menu_selected" href="/zadania-do-rozdzielenia">Zadania Do Rozdzielenia</a></li>
+					</ul>
+				</nav>
+			</section>
+		</div>
+		<div class="main_container">
+
+        </div>
+	</body>
+</html>

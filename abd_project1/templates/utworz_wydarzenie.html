@@ -36,19 +36,25 @@
 				<input type="text" name="email" value="{{ request.form.nazwa }}">
 				<br>
 				<label>Rodzaj:</label>
-				<input type="text" name="rozaj" value="{{ request.form.rodzaj }}">
+				<select name="rodzaj">
+                    <option value="integracja">integracja</option>
+                    <option value="plener">plener</option>
+                    <option value="warsztaty">warsztaty</option>
+                </select>
+                <br>
+                <label>Data:</label>
+                <input type="date" name="data">
                 <br>
 				<label>Godzina rozpoczęcia:</label>
-				<input type="text" name="godzina_rozpoczecia" value="{{ request.form.godzina_rozpoczecia }}">
+				<input type="time" name="godzina_rozpoczecia" value="{{ request.form.godzina_rozpoczecia }}">
                 <br>
 				<label>Godzina zakończenia:</label>
-				<input type="text" name="godzina_zakonczenia" value="{{ request.form.godzina_zakonczenia }}">
+				<input type="time" name="godzina_zakonczenia" value="{{ request.form.godzina_zakonczenia }}">
                 <br>
 				<label>Opis:</label>
-				<input type="text" name="opis" value="{{ request.form.opis }}">
-
+                <textarea name="opis" rows="10" cols="30"> </textarea>
 				<br><br>
-				<input class="login_button" type="submit" value="Zaloguj">
+				<input type="submit" value="Utwórz wydarzenie">
 			</form>
         </div>
 	</body>

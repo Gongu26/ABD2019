@@ -29,7 +29,7 @@ ul {
 	list-style: none;
 }
 
-li a {
+li {
 	display: block;
 	text-align: center;
 	font-size: 1.2em;
@@ -47,7 +47,7 @@ li a {
 	-webkit-box-shadow: 0px 2px 3px gray;
 }
 
-li a:hover {
+li:hover {
 	color: white;
 	background: #929292;
 }

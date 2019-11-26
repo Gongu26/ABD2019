@@ -73,9 +73,9 @@ class Wydarzenie(dbConnection.Model):
     __tablename__ = 'wydarzenie'
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.Date)
-    rodzaj = db.Column(db.Enum)
+    rodzaj = db.Column(db.String)
     opis = db.Column(db.String)
-    godzina_rozpoczenia = db.Column(db.TIMESTAMP)
+    godzina_rozpoczecia = db.Column(db.TIMESTAMP)
     godzina_zakonczenia = db.Column(db.TIMESTAMP)
 
     def __init__(self, data, rodzaj, opis, godzina_rozpoczenia, godzina_zakonczenia):

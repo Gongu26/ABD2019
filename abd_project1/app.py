@@ -9,9 +9,13 @@ app.secret_key = 'super secret key'
 DbConnection = DbConnection()
 dbAccess = DbAccess()
 
+@app.route("/")
+def main():
+    return redirect(url_for('logowanie'))
 
-@app.route("/", methods=['GET', 'POST'])
-def login():
+
+@app.route("/logowanie", methods=['GET', 'POST'])
+def logowanie():
     error = None
 
     if request.method == 'POST':
@@ -30,27 +34,40 @@ def profil():
     if session['id'] is not None:
         kronikarz = dbAccess.get_user_data()
         return render_template("profil.html", kronikarz=kronikarz)
-    return redirect(url_for(''))
-
+    return redirect(url_for('logowanie'))
 
 
 @app.route("/zmien-dane", methods=['GET', 'POST'])
 def zmien_dane():
     if session['id'] is not None:
         return render_template("zmien_dane.html")
-    return render_template('logowanie.html')
+    return redirect(url_for('logowanie'))
 
 
 @app.route("/wnioski")
 def wnioski():
     if session['id'] is not None:
-        redaktor_naczelny = dbAccess.is_user_redaktor_naczelny()
+        redaktor_naczelny = dbAccess.is_user_redaktor_naczelny(session['id'])
         if redaktor_naczelny:
             wniosek_kronikarz_list = dbAccess.get_all_actual_wnioski()
         else:
             wniosek_kronikarz_list = dbAccess.get_wnioski_by_user(session['id'])
         return render_template("wnioski.html", redaktor_naczelny=redaktor_naczelny, len=len(wniosek_kronikarz_list), wniosek_kronikarz=wniosek_kronikarz_list)
-    return redirect(url_for(''))
+    return redirect(url_for('logowanie'))
+
+
+@app.route("/wniosek-szczegoly", methods=['GET', 'POST'])
+def wniosek_szczegoly():
+    if session['id'] is not None:
+        return render_template("wniosek_szczegoly.html")
+    return redirect(url_for('logowanie'))
+
+
+@app.route("/wniosek-rozpatrz", methods=['GET', 'POST'])
+def wniosek_rozpatrz():
+    if session['id'] is not None:
+        return render_template("wniosek_rozpatrz.html")
+    return redirect(url_for('logowanie'))
 
 
 @app.route("/zloz-wniosek", methods=['GET', 'POST'])
@@ -60,32 +77,39 @@ def zloz_wniosek():
             return render_template("zloz_wniosek.html")
         dbAccess.add_wniosek(request.form['rodzaj'], request.form['tresc'], session['id'])
         return redirect(url_for('wnioski'))
-    return redirect(url_for(''))
+    return redirect(url_for('logowanie'))
 
 
 @app.route("/wydarzenia")
 def wydarzenia():
     if session['id'] is not None:
-        wydarzenia_list = dbAccess.get_wydarzenia_by_user()
+        wydarzenia_list = dbAccess.get_wydarzenia_by_user(session['id'])
         return render_template("wydarzenia.html", len=len(wydarzenia_list), wydarzenia=wydarzenia_list)
-    return redirect(url_for(''))
+    return redirect(url_for('logowanie'))
 
 
 @app.route("/utworz-wydarzenie", methods=['GET', 'POST'])
 def utworz_wydarzenie():
     if session['id'] is not None:
-        return render_template("utworz_wydarzenie.html")
+        if dbAccess.is_user_redaktor_organizacyjny(session['id']):
+            return render_template("utworz_wydarzenie.html")
     return redirect(url_for('logowanie'))
 
 
 @app.route("/zadania-do-rozdzielenia")
 def zadania_do_rozdzielenia():
     if session['id'] is not None:
-        if dbAccess.is_user_redaktor_naczelny():
+        if dbAccess.is_user_redaktor_naczelny(session['id']):
             task_list = dbAccess.get_zadania_to_assign()
-
             return render_template("zadania_do_rozdzielenia.html", len=len(task_list), zadania=task_list)
-    return redirect(url_for(''))
+    return redirect(url_for('logowanie'))
+
+
+@app.route("/zadania-do-rozdzielenia-szczegoly", methods=['GET', 'POST'])
+def zadania_do_rozdzielenia_szczegoly():
+    if session['id'] is not None:
+        return render_template("zadania_do_rozdzielenia_szczegoly.html")
+    return redirect(url_for('logowanie'))
 
 
 @app.route("/zadania-przydzielone")
@@ -97,7 +121,14 @@ def zadania_przydzielone():
                                aktualne_zadania_count=aktualne_zadania_count,
                                len=len(task_list),
                                zadania=task_list)
-    return redirect(url_for(''))
+    return redirect(url_for('logowanie'))
+
+
+@app.route("/zadania-przydzielone-szczegoly", methods=['GET', 'POST'])
+def zadania_przydzielone_szczegoly():
+    if session['id'] is not None:
+        return render_template("zadania_przydzielone_szczegoly.html")
+    return redirect(url_for('logowanie'))
 
 
 if __name__ == "__main__":

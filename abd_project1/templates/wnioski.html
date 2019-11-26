@@ -32,22 +32,29 @@
 		</div>
 		<div class="main_container">
             {%for i in range(0, len)%}
-                <li class="list"><p>
-                    {{wniosek_kronikarz[i][0].rodzaj}}
-                    {% if redaktor_naczelny == True %}
-                        - {{wniosek_kronikarz[i][1].imie}} {{wniosek_kronikarz[i][1].nazwisko}}
-                    {% else %}
-                        {%  if wniosek_kronikarz[i][0].data_rozpatrzenia != None  %}
-                            {% if wniosek_kronikarz[i][0].czy_przyjeto %}
-                                <span style="color:green">zatwierdzono</span>
-                            {% else %}
-                                 <span style="color:red">odrzucono</span>
-                            {% endif %}
+                <ol class="list"><p>
+                {% if redaktor_naczelny == True  %}
+                    <a class="list" href="{{url_for('wniosek_rozpatrz', id_wniosku=wniosek_kronikarz[i][0].id)}}">
+                {% else %}
+                    <a class="list" href="{{url_for('wniosek_szczegoly', id_wniosku=wniosek_kronikarz[i][0].id)}}">
+                {% endif %}
+
+                {{wniosek_kronikarz[i][0].rodzaj}}
+                    </a>
+                {% if redaktor_naczelny == True %}
+                    - {{wniosek_kronikarz[i][1].imie}} {{wniosek_kronikarz[i][1].nazwisko}}
+                {% else %}
+                    {%  if wniosek_kronikarz[i][0].data_rozpatrzenia != None  %}
+                        {% if wniosek_kronikarz[i][0].czy_przyjeto %}
+                            <span style="color:green">zatwierdzono</span>
                         {% else %}
-                            <span style="color:yellow">oczekujący</span>
+                             <span style="color:red">odrzucono</span>
                         {% endif %}
+                    {% else %}
+                        <span style="color:yellow">oczekujący</span>
                     {% endif %}
-                </p></li>
+                {% endif %}
+                </p></ol>
             {%endfor%}
         </div>
 	</body>

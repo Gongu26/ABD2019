@@ -5,7 +5,7 @@ from flask import session
 from sqlalchemy import func, Date
 
 from db_connection import DbConnection
-from models import Kronikarz, Zadanie, Kronikarz_Zadanie, Wniosek, Wydarzenie
+from models import Kronikarz, Zadanie, Kronikarz_Zadanie, Wniosek, Wydarzenie, Wydarzenie_Kronikarz
 
 dbConnection = DbConnection()
 
@@ -24,12 +24,21 @@ class DbAccess:
         result = dbConnection.engine.execute(s)
         return result.fetchone()
 
-    def is_user_redaktor_naczelny(self):
-        s = db.select([Kronikarz]).where(Kronikarz.nr_indeksu == session['id'])
+    def is_user_redaktor_naczelny(self, user_nr_indeksu):
+        s = db.select([Kronikarz]).where(Kronikarz.nr_indeksu == user_nr_indeksu)
 
         result = dbConnection.engine.execute(s)
         kronikarz = result.fetchone()
         if kronikarz.rodzaj == "redaktor naczelny":
+            return True
+        return False
+
+    def is_user_redaktor_organizacyjny(self, user_nr_indeksu):
+        s = db.select([Kronikarz]).where(Kronikarz.nr_indeksu == user_nr_indeksu)
+
+        result = dbConnection.engine.execute(s)
+        kronikarz = result.fetchone()
+        if kronikarz.rodzaj == "redaktor organizacyjny":
             return True
         return False
 
@@ -82,12 +91,10 @@ class DbAccess:
     def get_wydarzenia_by_user(self, user_nr_indeksu):
         result = dbConnection.db_session \
             .query(Wydarzenie) \
-            .join(Kronikarz, Wydarzenie.nr_indeksu_kronikarza == Kronikarz.nr_indeksu) \
-            .filter(Kronikarz.nr_indeksu == user_nr_indeksu).all()
-        if result:
-            return result
-        else:
-            return []
+            .join(Wydarzenie_Kronikarz, Wydarzenie.id == Wydarzenie_Kronikarz.id_wydarzenia) \
+            .join(Kronikarz, Wydarzenie_Kronikarz.nr_indeksu_kronikarza == Kronikarz.nr_indeksu) \
+            .filter(Kronikarz.nr_indeksu == user_nr_indeksu)
+        return result.all()
 
     def add_wydarzenie(self):
         pass
