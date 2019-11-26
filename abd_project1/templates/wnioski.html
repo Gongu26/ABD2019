@@ -34,9 +34,16 @@
             {%for i in range(0, len)%}
                 <ol class="list"><p>
                 {% if redaktor_naczelny == True  %}
-                    <a class="list" href="{{url_for('wniosek_rozpatrz', id_wniosku=wniosek_kronikarz[i][0].id)}}">
+                    <a class="list" href="{{url_for('wniosek_rozpatrz',
+                        id_wniosku=wniosek_kronikarz[i][0].id,
+                        rodzaj=wniosek_kronikarz[i][0].rodzaj,
+                        tresc=wniosek_kronikarz[i][0].tresc,
+                        imie=wniosek_kronikarz[i][1].imie,
+                        nazwisko=wniosek_kronikarz[i][1].nazwisko)}}">
                 {% else %}
-                    <a class="list" href="{{url_for('wniosek_szczegoly', id_wniosku=wniosek_kronikarz[i][0].id)}}">
+                    <a class="list" href="{{url_for('wniosek_szczegoly', id_wniosku=wniosek_kronikarz[i][0].id,
+                        rodzaj=wniosek_kronikarz[i][0].rodzaj,
+                        tresc=wniosek_kronikarz[i][0].tresc)}}">
                 {% endif %}
 
                 {{wniosek_kronikarz[i][0].rodzaj}}

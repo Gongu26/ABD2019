@@ -34,7 +34,10 @@
 
             {%for i in range(0, len)%}
                 <p class="list">
-                    <a class="list" href="{{url_for('zadania_przydzielone_szczegoly', id_zadania=zadania[i].id)}}">
+                    <a class="list" href="{{url_for('zadania_przydzielone_szczegoly',
+                        rodzaj=zadania[i].rodzaj_zadania,
+                        data=zadania[i].wyznaczona_data_realizacji,
+                        opis=zadania[i].opis)}}">
                         {{zadania[i].rodzaj_zadania}}
                     </a>
                 </p>

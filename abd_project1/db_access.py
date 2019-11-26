@@ -98,6 +98,8 @@ class DbAccess:
         pass
 
     def add_wniosek(self, rodzaj, tresc, nr_indeksu_kronikarza):
+        if rodzaj == 'wypożyczenie sprzętu':
+            rodzaj = 'wypoyczenie sprztu'
         wniosek = Wniosek(rodzaj=rodzaj,
                           data_zlozenia=date.today(),
                           czy_przyjeto=None,

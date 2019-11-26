@@ -9,6 +9,7 @@ app.secret_key = 'super secret key'
 DbConnection = DbConnection()
 dbAccess = DbAccess()
 
+
 @app.route("/")
 def main():
     return redirect(url_for('logowanie'))
@@ -59,14 +60,25 @@ def wnioski():
 @app.route("/wniosek-szczegoly", methods=['GET', 'POST'])
 def wniosek_szczegoly():
     if session['id'] is not None:
-        return render_template("wniosek_szczegoly.html")
+        tresc = request.args.get('tresc')
+        rodzaj = request.args.get('rodzaj')
+        return render_template("wniosek_szczegoly.html", rodzaj=rodzaj, tresc=tresc)
     return redirect(url_for('logowanie'))
 
 
 @app.route("/wniosek-rozpatrz", methods=['GET', 'POST'])
 def wniosek_rozpatrz():
     if session['id'] is not None:
-        return render_template("wniosek_rozpatrz.html")
+        if request.method =='GET':
+            tresc = request.args.get('tresc')
+            rodzaj = request.args.get('rodzaj')
+            imie = request.args.get('imie')
+            nazwisko = request.args.get('nazwisko')
+            return render_template("wniosek_rozpatrz.html", tresc=tresc, rodzaj=rodzaj, imie=imie, nazwisko=nazwisko)
+        else:
+            id = request.args.get('id')
+            przyjeto = request.args.get('przyjeto')
+            # [TODO] update wniosek
     return redirect(url_for('logowanie'))
 
 
@@ -113,7 +125,17 @@ def zadania_do_rozdzielenia():
 @app.route("/zadania-do-rozdzielenia-szczegoly", methods=['GET', 'POST'])
 def zadania_do_rozdzielenia_szczegoly():
     if session['id'] is not None:
-        return render_template("zadania_do_rozdzielenia_szczegoly.html")
+        if request.method == 'GET':
+            data = request.args.get('data')
+            rodzaj = request.args.get('rodzaj')
+            opis = request.args.get('opis')
+            id = request.args.get('id')
+            return render_template("zadania_do_rozdzielenia_szczegoly.html", rodzaj=rodzaj, data=data, opis=opis, id=id)
+        else:
+            id_zadania = request.args.get('id_zadania')
+            #dodaj ludzi do zadania o id - id_zadania
+
+            redirect(url_for('zadania_do_rozdzielenia'))
     return redirect(url_for('logowanie'))
 
 
@@ -130,7 +152,10 @@ def zadania_przydzielone():
 @app.route("/zadania-przydzielone-szczegoly", methods=['GET', 'POST'])
 def zadania_przydzielone_szczegoly():
     if session['id'] is not None:
-        return render_template("zadania_przydzielone_szczegoly.html")
+        data = request.args.get('data')
+        rodzaj = request.args.get('rodzaj')
+        opis = request.args.get('opis')
+        return render_template("zadania_przydzielone_szczegoly.html", rodzaj=rodzaj, data=data, opis=opis)
     return redirect(url_for('logowanie'))
 
 
