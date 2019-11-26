@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+	</head>
+	<body>
+		<h1>Kronika studencka</h1>
+		<div class="horizontal_menu_container">
+			<section>
+				<nav>
+					<ul class="horizontal_menu">
+					<li class="horizontal_menu"><a href="/profil">Moje dane</a></li>
+					<li class="horizontal_menu"><a>Baza zdjęć</a></li>
+					<li class="horizontal_menu"><a>Artykuły</a></li>
+					<li class="horizontal_menu"><a href="/zadania-przydzielone">Zadania</a></li>
+					<li class="horizontal_menu"><a>Terminarz</a></li>
+					<li class="horizontal_menu"><a href="/wydarzenia">Wydarzenia</a></li>
+					<li class="horizontal_menu"><a class="menu_selected" href="/wnioski">Wnioski</a></li>
+					</ul>
+				</nav>
+			</section>
+		</div>
+		<div class="vertical_menu_container">
+			<section>
+				<nav>
+					<ul>
+					<li><a class="menu_selected" href="/wnioski">Wnioski</a></li>
+					<li><a href="/zloz-wniosek">Złóż wniosek</a></li>
+					</ul>
+				</nav>
+			</section>
+		</div>
+		<div class="main_container">
+            <p>{{ imie }} {{nazwisko}}</p>
+            <p>{{ rodzaj }}</p>
+            <p>{{ tresc }}</p>
+            <input type="submit" name="akceptuj" value="akceptuj" />
+            <input type="submit" name="odrzuc" value="odrzuc" />
+        </div>
+	</body>
+</html>
