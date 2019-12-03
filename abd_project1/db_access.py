@@ -110,10 +110,16 @@ class DbAccess:
         dbConnection.db_session.commit()
 
     def accept_wniosek(self, wniosek_id):
-        pass
+        update = db.update(Wniosek) \
+            .where(Wniosek.id == wniosek_id) \
+            .values(dict(data_rozpatrzenia=date.today(),czy_przyjeto=True))
+        dbConnection.engine.execute(update)
 
     def reject_wniosek(self, wniosek_id):
-        pass
+        update = db.update(Wniosek) \
+            .where(Wniosek.id == wniosek_id) \
+            .values(dict(data_rozpatrzenia=date.today(), czy_przyjeto=False))
+        dbConnection.engine.execute(update)
 
     def match_kronikarze_zadanie(self, zadanie, kronikarze):
         pass

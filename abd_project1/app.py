@@ -27,6 +27,8 @@ def logowanie():
             else:
                 session['id'] = kronikarz.nr_indeksu
                 return redirect(url_for('profil'))
+        else:
+            error = 'Spróbuj ponownie'
     return render_template('logowanie.html', error=error)
 
 
@@ -53,7 +55,10 @@ def wnioski():
             wniosek_kronikarz_list = dbAccess.get_all_actual_wnioski()
         else:
             wniosek_kronikarz_list = dbAccess.get_wnioski_by_user(session['id'])
-        return render_template("wnioski.html", redaktor_naczelny=redaktor_naczelny, len=len(wniosek_kronikarz_list), wniosek_kronikarz=wniosek_kronikarz_list)
+        return render_template("wnioski.html",
+                               redaktor_naczelny=redaktor_naczelny,
+                               len=len(wniosek_kronikarz_list),
+                               wniosek_kronikarz=wniosek_kronikarz_list)
     return redirect(url_for('logowanie'))
 
 
@@ -69,16 +74,23 @@ def wniosek_szczegoly():
 @app.route("/wniosek-rozpatrz", methods=['GET', 'POST'])
 def wniosek_rozpatrz():
     if session['id'] is not None:
-        if request.method =='GET':
+        if request.method == 'GET':
             tresc = request.args.get('tresc')
             rodzaj = request.args.get('rodzaj')
             imie = request.args.get('imie')
             nazwisko = request.args.get('nazwisko')
-            return render_template("wniosek_rozpatrz.html", tresc=tresc, rodzaj=rodzaj, imie=imie, nazwisko=nazwisko)
+            id = request.args.get('id_wniosku')
+            return render_template("wniosek_rozpatrz.html", tresc=tresc, rodzaj=rodzaj,
+                                   imie=imie, nazwisko=nazwisko, id=id)
         else:
-            id = request.args.get('id')
-            przyjeto = request.args.get('przyjeto')
-            # [TODO] update wniosek
+            id = request.form['id']
+            if 'akceptuj' in request.form:
+                print("akceptuj")
+                dbAccess.accept_wniosek(id)
+            else:
+                print("odrzuc")
+                dbAccess.reject_wniosek(id)
+            return redirect(url_for('wnioski'))
     return redirect(url_for('logowanie'))
 
 
@@ -133,7 +145,7 @@ def zadania_do_rozdzielenia_szczegoly():
             return render_template("zadania_do_rozdzielenia_szczegoly.html", rodzaj=rodzaj, data=data, opis=opis, id=id)
         else:
             id_zadania = request.args.get('id_zadania')
-            #dodaj ludzi do zadania o id - id_zadania
+            # dodaj ludzi do zadania o id - id_zadania
 
             redirect(url_for('zadania_do_rozdzielenia'))
     return redirect(url_for('logowanie'))

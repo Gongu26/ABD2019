@@ -34,8 +34,11 @@
             <p>{{ imie }} {{nazwisko}}</p>
             <p>{{ rodzaj }}</p>
             <p>{{ tresc }}</p>
-            <input type="submit" name="akceptuj" value="akceptuj" />
-            <input type="submit" name="odrzuc" value="odrzuc" />
+            <form action="" method="POST">
+                <input style="visibility: hidden" type="number" name="id" value={{ id }} />
+                <input type="submit" name="akceptuj" value="akceptuj" />
+                <input type="submit" name="odrzuc" value="odrzuc" />
+            </form>
         </div>
 	</body>
 </html>
