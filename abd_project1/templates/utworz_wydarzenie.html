@@ -32,9 +32,6 @@
 		</div>
 		<div class="main_container">
             <form action="" method="post">
-				<label>Nazwa:</label>
-				<input type="text" name="email" value="{{ request.form.nazwa }}">
-				<br>
 				<label>Rodzaj:</label>
 				<select name="rodzaj">
                     <option value="integracja">integracja</option>
@@ -46,10 +43,10 @@
                 <input type="date" name="data">
                 <br>
 				<label>Godzina rozpoczęcia:</label>
-				<input type="time" name="godzina_rozpoczecia" value="{{ request.form.godzina_rozpoczecia }}">
+				<input type="time" name="godz_rozp" value="{{ request.form.godzina_rozpoczecia }}">
                 <br>
 				<label>Godzina zakończenia:</label>
-				<input type="time" name="godzina_zakonczenia" value="{{ request.form.godzina_zakonczenia }}">
+				<input type="time" name="godz_zako" value="{{ request.form.godzina_zakonczenia }}">
                 <br>
 				<label>Opis:</label>
                 <textarea name="opis" rows="10" cols="30"> </textarea>

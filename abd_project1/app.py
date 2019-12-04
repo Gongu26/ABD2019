@@ -1,3 +1,5 @@
+from datetime import date, datetime
+
 from flask import Flask, render_template, redirect, url_for, request, session
 
 from db_access import DbAccess
@@ -115,8 +117,16 @@ def wydarzenia():
 @app.route("/utworz-wydarzenie", methods=['GET', 'POST'])
 def utworz_wydarzenie():
     if session['id'] is not None:
-        if dbAccess.is_user_redaktor_organizacyjny(session['id']):
-            return render_template("utworz_wydarzenie.html")
+        if request.method == 'GET':
+            if dbAccess.is_user_redaktor_organizacyjny(session['id']):
+                return render_template("utworz_wydarzenie.html")
+        else:
+            rodzaj = request.form['rodzaj']
+            data = request.form['data']
+            godz_rozp = datetime.strptime(request.form['godz_rozp'], '%H:%M')
+            godz_zako = datetime.strptime(request.form['godz_zako'], '%H:%M')
+            opis = request.form['opis']
+            dbAccess.add_wydarzenie(rodzaj, data, godz_rozp, godz_zako, opis)
     return redirect(url_for('logowanie'))
 
 
@@ -144,10 +154,17 @@ def zadania_do_rozdzielenia_szczegoly():
             id = request.args.get('id')
             return render_template("zadania_do_rozdzielenia_szczegoly.html", rodzaj=rodzaj, data=data, opis=opis, id=id)
         else:
-            id_zadania = request.args.get('id_zadania')
-            # dodaj ludzi do zadania o id - id_zadania
+            id_zadania = int(request.form['id'])
+            data = datetime.strptime(request.form['data'], '%Y-%m-%d')
+            user1 = request.form['user1']
+            user2 = request.form['user2']
+            user3 = request.form['user3']
 
-            redirect(url_for('zadania_do_rozdzielenia'))
+            print(data)
+            print(id_zadania)
+            dbAccess.match_kronikarze_zadanie(id_zadania, data, (user1, user2, user3))
+
+            return redirect(url_for('zadania_do_rozdzielenia'))
     return redirect(url_for('logowanie'))
 
 

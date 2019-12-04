@@ -35,6 +35,14 @@
             <p>{{ data }}</p>
             <p>{{ opis }}</p>
             <p>Przydziel zadanie: </p>
+            <form action="" method="post">
+                <input type="text" style="visibility: hidden"  value="{{ data }}" name="data">
+                <input type="text" style="visibility: hidden" value="{{ id }}" name="id">
+                <input type="text" name="user1">
+                <input type="text" name="user2">
+                <input type="text" name="user3">
+                <input type="submit" value="Przydziel">
+            </form>
         </div>
 	</body>
 </html>

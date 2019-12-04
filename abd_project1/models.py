@@ -78,7 +78,7 @@ class Wydarzenie(dbConnection.Model):
     godzina_rozpoczecia = db.Column(db.TIMESTAMP)
     godzina_zakonczenia = db.Column(db.TIMESTAMP)
 
-    def __init__(self, data, rodzaj, opis, godzina_rozpoczenia, godzina_zakonczenia):
+    def __init__(self, rodzaj, data, godzina_rozpoczenia, godzina_zakonczenia, opis):
         self.data = data
         self.rodzaj = rodzaj
         self.opis = opis
